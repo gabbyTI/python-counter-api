@@ -15,11 +15,21 @@ partition_key = "VisitorCountPartition"
 row_key = "1"
 the_connection_string = os.getenv("CONNECTION_STRING")
 
-table_service =  TableService(endpoint_suffix = "table.cosmos.azure.com", connection_string= the_connection_string)
+table_service =  TableService(endpoint_suffix = "core.windows.net", connection_string= the_connection_string)
 
 # Create the table if it does not exist
 if not table_service.exists(table_name):
     table_service.create_table(table_name)
+    print("here oooooooooooooooo")
+    table_service.insert_entity(
+        table_name,
+        {
+            'PartitionKey': partition_key,
+            'RowKey': row_key,
+            'visitorCount': 0,
+            # Add other properties if needed
+        }
+    )
 
 @app.route('/getVisitorCount', methods=['GET'])
 def get_visitor_count():
