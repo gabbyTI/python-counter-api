@@ -20,17 +20,18 @@ table_service =  TableService(endpoint_suffix = "core.windows.net", connection_s
 # Create the table if it does not exist
 if not table_service.exists(table_name):
     table_service.create_table(table_name)
-    
-# Check if the entity exists; if not, insert a default entity
-entity_exists = table_service.exists(table_name, partition_key, row_key)
 
-if not entity_exists:
+# Create default entity if table is empty
+try:
+    table_service.get_entity(table_name, partition_key, row_key)
+except:
     table_service.insert_entity(
         table_name,
         {
             'PartitionKey': partition_key,
             'RowKey': row_key,
             'visitorCount': 0,
+            # Add other properties if needed
         }
     )
 
