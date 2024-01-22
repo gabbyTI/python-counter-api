@@ -20,7 +20,9 @@ def update_visitor_count(req: func.HttpRequest) -> func.HttpResponse:
     return update_visitor_count_main(req)
 
 
-@app.route(route="hello_world", auth_level=func.AuthLevel.ANONYMOUS)
+
+
+@app.route(route="hello_world", auth_level=func.AuthLevel.ADMIN)
 def hello_world(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 

@@ -5,14 +5,14 @@ import logging
 import os
 from configure.db import TableServiceHelper
 
-table_service = TableServiceHelper().table()
+table_service = TableServiceHelper()
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    entity = table_service.get_entity(os.environ['table_name'], 'VisitorCountPartition', '1')
-    print(entity)
-    visitor_count = entity.get('visitorCount')
+    entity = table_service.get_entity("VisitorCountPartition", "1")
+    visitor_count = entity.visitorCount
     visitor_count += 1
-    table_service.update_entity(os.environ['table_name'], {'PartitionKey': 'VisitorCountPartition', 'RowKey': '1', 'visitorCount': visitor_count})
+    entity.visitorCount = visitor_count
+    table_service.update_entity(entity)
     result = {
       "message" : "Visitor count updated successfully",
     }

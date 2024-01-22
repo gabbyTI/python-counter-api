@@ -5,15 +5,14 @@ import logging
 import os
 from configure.db import TableServiceHelper
 
-table_service = TableServiceHelper().table()
+table_service = TableServiceHelper()
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     # logging.info('Python HTTP trigger function processed a request.')
-    entity = table_service.get_entity(os.getenv("table_name"), 'VisitorCountPartition', '1')
-    
+    entity = table_service.get_entity("VisitorCountPartition", "1")
     result = {
-      "count" : entity.get('visitorCount'),
+      "count" : entity.visitorCount,
     }
 
     return func.HttpResponse(
